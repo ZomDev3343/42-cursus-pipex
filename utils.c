@@ -6,11 +6,44 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:31:05 by truello           #+#    #+#             */
-/*   Updated: 2023/12/14 15:56:04 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/15 16:31:04 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	check_files(char *input, char *output)
+{
+	return (!access(input, 0) && !access(output, 0));
+}
+
+int	check_args(int ac, char **av)
+{
+	int	i;
+
+	i = 0;
+	while (i < ac)
+	{
+		if (av[i][0] == '\0')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
+int	check_cmds(int ac, char **av)
+{
+	int	i;
+
+	i = 2;
+	while (i < ac - 1)
+	{
+		if (av[i][0] == '\0')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
 
 char	*get_path(char **env)
 {

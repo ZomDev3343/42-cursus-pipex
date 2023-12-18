@@ -1,7 +1,10 @@
 SRC=pipex.c \
 	utils.c
-BONUS_SRC=pipex_bonus.c
+BONUS_SRC=pipex_bonus.c \
+	utils.c
 OBJ=$(SRC:.c=.o)
+BONUS_OBJ=$(BONUS_SRC:.c=.o)
+BONUS=pipex_bonus
 NAME=pipex
 FT=libft/libft.a
 FLAGS=-Wall -Wextra -Werror
@@ -14,6 +17,10 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	make -C libft
 	cc $(FLAGS) $(FT) $(OBJ) -o $@
+
+bonus: $(BONUS_OBJ)
+	make -C libft
+	cc $(FLAGS) $(FT) $(BONUS_OBJ) -o $(BONUS)
 
 clean:
 	rm -rf *.o
