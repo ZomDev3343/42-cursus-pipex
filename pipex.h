@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:16:25 by truello           #+#    #+#             */
-/*   Updated: 2023/12/14 18:35:33 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/18 14:15:55 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <errno.h>
 # include <fcntl.h>
 
-int		check_files(char *input, char *output);
+int		check_input(char *input);
 int		check_args(int ac, char **av);
 int		check_cmds(int ac, char **av);
 char	*get_path(char **env);

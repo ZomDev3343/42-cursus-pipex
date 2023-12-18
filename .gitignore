@@ -1,6 +1,5 @@
 *.o
-test
-test2
+test*
 pipex
 .vscode
 *.a

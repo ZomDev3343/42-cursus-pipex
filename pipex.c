@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:13:22 by truello           #+#    #+#             */
-/*   Updated: 2023/12/18 12:39:15 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/18 14:34:00 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void	handle_second_command(char *output_file, char *cmd, int fd[2]
 	if (cmd_file == NULL)
 		return (free_parts(cmd_parts),
 			ft_printf("Invalid command!\n"), (void) 0);
-	file_fd = open(output_file, O_WRONLY);
+	unlink(output_file);
+	file_fd = open(output_file, O_CREAT | O_WRONLY, 0644);
 	dup2(file_fd, STDOUT_FILENO);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
@@ -94,21 +95,19 @@ int	main(int ac, char **av, char **env)
 		print_usage();
 	else
 	{
-		if (check_files(av[1], av[4]))
+		if (!access(av[1], 0))
 		{
 			if (check_cmds(ac, av))
 				pipex(av, env);
 			else
 			{
-					if (access(av[4], 0))
-					{
-						fd = open(av[4], O_CREAT | O_WRONLY);
-						char c = 127;
-						write(fd, &c, 1);
-						close(fd);
-					}
+				unlink(av[4]);
+				fd = open(av[4], O_CREAT | O_APPEND | O_WRONLY, 0644);
+				close(fd);
 			}
 		}
+		else
+			perror(av[1]);
 	}
 	return (0);
 }
