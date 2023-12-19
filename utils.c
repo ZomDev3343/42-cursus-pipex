@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:31:05 by truello           #+#    #+#             */
-/*   Updated: 2023/12/18 14:15:51 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/18 14:37:35 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,4 @@ char	*get_path(char **env)
 		env++;
 	}
 	return (NULL);
-}
-
-char	*get_cmd_file(char *cmd_name, char *path)
-{
-	char	**paths;
-	int		i;
-	char	*cmd_path;
-	char	*tmp;
-
-	i = -1;
-	paths = ft_split(path, ':');
-	while (paths[++i])
-	{
-		tmp = ft_strnewjoin(paths[i], "/");
-		cmd_path = ft_strnewjoin(tmp, cmd_name);
-		free(tmp);
-		if (access(cmd_path, 0) == 0)
-			return (cmd_path);
-		free(cmd_path);
-	}
-	return (free_parts(paths), NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:13:22 by truello           #+#    #+#             */
-/*   Updated: 2023/12/18 14:34:00 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/19 15:12:35 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,24 @@ static void	print_usage(void)
 	ft_printf("Usage : ./pipex file1 cmd1 cmd2 file2\n");
 }
 
-static void	handle_first_command(char *input_file, char *cmd, int fd[2]
-	, char *path)
+static void	handle_first_command(char *input_file, t_cmds *cmd, int fd[2])
 {
 	int		file_fd;
-	char	*cmd_file;
-	char	**cmd_parts;
 
-	cmd_parts = ft_split(cmd, ' ');
-	cmd_file = get_cmd_file(cmd_parts[0], path);
-	if (cmd_file == NULL)
-		return (free_parts(cmd_parts),
-			ft_printf("Invalid command!\n"), (void) 0);
 	file_fd = open(input_file, O_RDONLY);
 	dup2(file_fd, STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
 	close(file_fd);
-	if (execve(cmd_file, cmd_parts, NULL) == -1)
-		return (free(cmd_file), free_parts(cmd_parts),
-			perror("Error while calling the first command!\n"));
+	if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
+		perror("");
 }
 
-static void	handle_second_command(char *output_file, char *cmd, int fd[2]
-	, char *path)
+static void	handle_second_command(char *output_file, t_cmds *cmd, int fd[2])
 {
 	int		file_fd;
-	char	*cmd_file;
-	char	**cmd_parts;
 
-	cmd_parts = ft_split(cmd, ' ');
-	cmd_file = get_cmd_file(cmd_parts[0], path);
-	if (cmd_file == NULL)
-		return (free_parts(cmd_parts),
-			ft_printf("Invalid command!\n"), (void) 0);
 	unlink(output_file);
 	file_fd = open(output_file, O_CREAT | O_WRONLY, 0644);
 	dup2(file_fd, STDOUT_FILENO);
@@ -59,37 +42,37 @@ static void	handle_second_command(char *output_file, char *cmd, int fd[2]
 	close(fd[0]);
 	close(fd[1]);
 	close(file_fd);
-	if (execve(cmd_file, cmd_parts, NULL) == -1)
-		return (free(cmd_file), free_parts(cmd_parts),
-			perror("Error while calling the first command!\n"));
+	if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
+		perror("");
 }
 
-static void	pipex(char **args, char **env)
+static void	pipex(char *input_file, char *output_file, t_cmds **cmds)
 {
 	int		fd[2];
 	int		pids[2];
-	char	*path;
+	t_cmds	*cur_cmd;
 
+	cur_cmd = *cmds;
 	if (pipe(fd) == -1)
 		return (ft_printf("Error while creating the pipe!\n"), (void) 0);
-	path = get_path(env);
 	pids[0] = fork();
 	if (pids[0] == 0)
-		return (handle_first_command(args[1], args[2], fd, path));
+		return (handle_first_command(input_file, cur_cmd, fd));
 	waitpid(pids[0], NULL, 0);
+	cur_cmd = cur_cmd->next;
 	pids[1] = fork();
 	if (pids[1] == 0)
-		return (handle_second_command(args[4], args[3], fd, path));
+		return (handle_second_command(output_file, cur_cmd, fd));
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pids[1], NULL, 0);
-	if (!pids[0] && pids[1])
-		free(path);
+	free_cmds(*cmds);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	int		fd;
+	t_cmds	*cmds;
 
 	if (ac != 5)
 		print_usage();
@@ -97,8 +80,9 @@ int	main(int ac, char **av, char **env)
 	{
 		if (!access(av[1], 0))
 		{
-			if (check_cmds(ac, av))
-				pipex(av, env);
+			cmds = NULL;
+			if (get_commands(ac, av, get_path(env), &cmds))
+				pipex(av[1], av[4], &cmds);
 			else
 			{
 				unlink(av[4]);
