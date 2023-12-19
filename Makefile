@@ -3,7 +3,8 @@ SRC=pipex.c \
 	cmd_util.c
 BONUS_SRC=pipex_bonus.c \
 	utils.c \
-	cmd_util.c
+	cmd_util.c \
+	utils_bonus.c
 OBJ=$(SRC:.c=.o)
 BONUS_OBJ=$(BONUS_SRC:.c=.o)
 BONUS=pipex_bonus

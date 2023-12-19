@@ -6,16 +6,11 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:13:22 by truello           #+#    #+#             */
-/*   Updated: 2023/12/19 15:12:35 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/19 15:40:49 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-static void	print_usage(void)
-{
-	ft_printf("Usage : ./pipex file1 cmd1 cmd2 file2\n");
-}
 
 static void	handle_first_command(char *input_file, t_cmds *cmd, int fd[2])
 {
@@ -75,7 +70,7 @@ int	main(int ac, char **av, char **env)
 	t_cmds	*cmds;
 
 	if (ac != 5)
-		print_usage();
+		ft_printf("Usage : ./pipex file1 cmd1 cmd2 file2\n");
 	else
 	{
 		if (!access(av[1], 0))

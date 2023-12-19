@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:16:25 by truello           #+#    #+#             */
-/*   Updated: 2023/12/18 15:13:35 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/19 16:28:05 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,12 @@ void	free_cmds(t_cmds *cmds);
 t_cmds	*newcmd(char *cmd_file, char **cmd_args);
 void	pbcmd(t_cmds **parent, t_cmds *child);
 int		get_commands(int ac, char **av, char *path, t_cmds **cmds);
+
+/* Bonus */
+
+int		get_cmds_amt(t_cmds *cmds);
+int		init_pipes(int **buffer, int amount);
+void	close_pipes(int **pipes);
+void	free_pipes(int **pipes, int amt);
 
 #endif
