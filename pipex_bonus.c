@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:51:51 by truello           #+#    #+#             */
-/*   Updated: 2023/12/19 17:36:14 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/19 17:43:26 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	handle_last(char *output_file, int input_fd, t_cmds *cmd,
 
 	fd = open(output_file, O_RDONLY);
 	dup2(input_fd, STDIN_FILENO);
-	dup2(output_file, STDOUT_FILENO);
+	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	close_pipes(pipes);
 	if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
@@ -57,7 +57,7 @@ static void	pipex(char *input_file, char *output_file, t_cmds *cmds)
 	int	cur_pipe;
 
 	cur_pipe = 0;
-	if (init_pipes(get_cmds_amt(cmds), pipes) == 0)
+	if (init_pipes(pipes, get_cmds_amt(cmds)) == 0)
 		return (ft_printf("Error while creating the pipes!\n"), (void) 0);
 	pids = (int *) ft_calloc(get_cmds_amt(cmds), sizeof(int));
 	if (pids == NULL)
