@@ -12,13 +12,14 @@ NAME=pipex
 FT=libft/libft.a
 FLAGS=-Wall -Wextra -Werror
 
-all: $(NAME)
+all:
+	make -C libft
+	make $(NAME)
 
 %.o: %.c
 	cc -c $< -o $@
 
-$(NAME): $(OBJ)
-	make -C libft
+$(NAME): $(FT) $(OBJ)
 	cc $(FLAGS) $(FT) $(OBJ) -o $@
 
 bonus: $(BONUS_OBJ)

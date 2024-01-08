@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:36:56 by truello           #+#    #+#             */
-/*   Updated: 2023/12/19 16:27:33 by truello          ###   ########.fr       */
+/*   Updated: 2023/12/21 12:00:11 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ void	close_pipes(int **pipes)
 {
 	int	i;
 
-	i = -1;
-	while (pipes[++i])
+	i = 0;
+	while (pipes[i])
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
+		i++;
 	}
 }
 
