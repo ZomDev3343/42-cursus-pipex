@@ -6,94 +6,108 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:51:51 by truello           #+#    #+#             */
-/*   Updated: 2024/01/09 14:23:10 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/09 14:47:44 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	handle_first(char *input_file, t_cmds *cmd, int pipe_fd[2][2])
+static void	handle_first(char *input_file, t_cmds *cmd)
 {
 	int	file_fd;
+	int	fd[2];
+	int	pid;
 
-	file_fd = open(input_file, O_RDONLY);
-	if (file_fd == -1)
-		return (perror(""));
-	dup2(file_fd, STDIN_FILENO);
-	dup2(pipe_fd[0][1], STDOUT_FILENO);
-	close_pipes(pipe_fd);
-	close(file_fd);
-	if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
-		perror("");
-
+	if (pipe(fd) == -1)
+		return (perror(""), (void) 0);
+	pid = fork();
+	if (pid == 0)
+	{
+		file_fd = open(input_file, O_RDONLY);
+		if (file_fd == -1)
+			return (perror(""));
+		dup2(file_fd, STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
+			perror("");
+	}
+	else
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
+		wait(NULL);
+	}
 }
 
 /*
 	Reading pipe id : cur_pid % 2 == 0
 	Writing pipe id : cur_pid % 2 != 0
 */
-static void	handle_command(int pipe_fd[2][2], t_cmds *cmd, int cur_pid)
+static void	handle_command(t_cmds *cmd)
 {
-	ft_printf("Command name : %s\nArgs : %s\n", cmd->cmd_args[0], cmd->cmd_args[1]);
-	dup2(pipe_fd[cur_pid % 2][1], STDOUT_FILENO);
-	close_pipes(pipe_fd);
-	ft_printf("%d ; %d\n", pipe_fd[cur_pid % 2 == 0][0], pipe_fd[cur_pid % 2][1]);
-	if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
-		perror("");
+	int	fd[2];
+	int	pid;
 
+	if (pipe(fd) == -1)
+		return (perror(""), (void) 0);
+	pid = fork();
+	if (pid == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
+			perror("");
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		wait(NULL);
+	}
 }
 
-static void	handle_last(char *output_file, int pipe_fd[2][2],
-	t_cmds *cmd, int cur_pid)
+static void	handle_last(char *output_file, t_cmds *cmd)
 {
 	int	file_fd;
+	int	fd[2];
+	int	pid;
 
-	unlink(output_file);
-	file_fd = open(output_file, O_CREAT | O_WRONLY, 0644);
-	if (file_fd == -1)
-		return (perror(""));
-	dup2(pipe_fd[cur_pid % 2 == 0][0], STDIN_FILENO);
-	dup2(file_fd, STDOUT_FILENO);
-	close_pipes(pipe_fd);
-	close(file_fd);
-	if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
-		perror("");
+	if (pipe(fd) == -1)
+		return (perror(""), (void) 0);
+	pid = fork();
+	if (pid == 0)
+	{
+		unlink(output_file);
+		file_fd = open(output_file, O_CREAT | O_WRONLY, 0644);
+		if (file_fd == -1)
+			return (perror(""));
+		dup2(file_fd, STDOUT_FILENO);
+		if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
+			perror("");
+	}
+	else
+	{
+		close(fd[0]);
+		close(fd[1]);
+		wait(NULL);
+	}
 }
 
 static void	pipex(char *input_file, char *output_file, t_cmds *cmds,
 	int cmd_amt)
 {
-	int	pipe_fd[2][2];
-	int	*pids;
 	int	cur_pid;
 
 	cur_pid = 0;
-	ft_printf("Commands amount : %d\n", cmd_amt);
-	init_pipes_and_pids(pipe_fd, &pids, cmd_amt);
-	pids[0] = fork();
-	if (pids[0] == 0)
-		return (handle_first(input_file, cmds, pipe_fd));
-	dup2(pipe_fd[0][0], STDIN_FILENO);
-	wait(NULL);
+	handle_first(input_file, cmds);
 	cmds = cmds->next;
 	while (++cur_pid < cmd_amt - 1)
 	{
-		pipe(pipe_fd[cur_pid % 2]);
-		pids[cur_pid] = fork();
-		ft_printf("PID : %d\n", pids[cur_pid]);
-		if (pids[cur_pid] == 0)
-			return (handle_command(pipe_fd, cmds, cur_pid));
-		dup2(pipe_fd[cur_pid % 2][0], STDIN_FILENO);
+		handle_command(cmds);
 		cmds = cmds->next;
-		wait(NULL);
 	}
-	ft_printf("fgoerogoe\n");
-	pids[cur_pid] = fork();
-	if (pids[cur_pid] == 0)
-		return (handle_last(output_file, pipe_fd, cmds, cur_pid));
-	close_pipes(pipe_fd);
-	ft_printf("fgoerogoe\n");
-	wait(NULL);
+	handle_last(output_file, cmds);
 }
 
 int	main(int ac, char **av, char **env)
