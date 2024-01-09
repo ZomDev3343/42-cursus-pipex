@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:36:56 by truello           #+#    #+#             */
-/*   Updated: 2023/12/21 12:00:11 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/09 13:44:22 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,26 @@ int	get_cmds_amt(t_cmds *cmds)
 	return (res);
 }
 
-int	init_pipes(int **buffer, int amount)
+int	init_pipes_and_pids(int pipe_fd[2][2], int **pids, int amt)
 {
-	int	i;
-
-	i = -1;
-	buffer = (int **) ft_calloc(amount + 1, sizeof(int *));
-	if (buffer == NULL)
-		return (0);
-	while (++i < amount)
-	{
-		buffer[i] = ft_calloc(2, sizeof(int));
-		if (buffer[i] == NULL)
-			return (free_pipes(buffer, i + 1), 0);
-	}
-	while (--i >= 0)
-		if (pipe(buffer[i]) == -1)
-			return (free_pipes(buffer, amount + 1), 0);
+	if (pipe(pipe_fd[0]) == -1 || pipe(pipe_fd[1]) == -1)
+		return (ft_printf("Pipe error!\n"));
+	*pids = (int *) ft_calloc(amt, sizeof(int));
+	if (pids == NULL)
+		return (ft_printf("Malloc error for pids array!\n"));
 	return (1);
 }
 
-void	close_pipes(int **pipes)
+void	close_pipes(int pipe[2][2])
 {
-	int	i;
-
-	i = 0;
-	while (pipes[i])
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
+	close(pipe[0][0]);
+	close(pipe[0][1]);
+	close(pipe[1][0]);
+	close(pipe[1][1]);
 }
 
-void	free_pipes(int **pipes, int amt)
+void	wait_all_pids(int *pids, int len)
 {
-	int	i;
-
-	i = -1;
-	while (pipes[++i])
-		free(pipes[i]);
-	free(pipes);
-	pipes = NULL;
+	while (len-- > 0)
+		wait(NULL);
 }

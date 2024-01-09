@@ -22,7 +22,7 @@ all:
 $(NAME): $(FT) $(OBJ)
 	cc $(FLAGS) $(FT) $(OBJ) -o $@
 
-bonus: $(BONUS_OBJ)
+bonus: $(FT) $(BONUS_OBJ)
 	make -C libft
 	cc $(FLAGS) $(FT) $(BONUS_OBJ) -o $(BONUS)
 
@@ -36,4 +36,4 @@ fclean: clean
 
 re: clean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

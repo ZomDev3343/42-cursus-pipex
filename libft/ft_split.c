@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 15:45:11 by truello           #+#    #+#             */
-/*   Updated: 2023/12/13 17:49:30 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:08:23 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	get_nb_parts(char *str, char c)
 
 	if (str[0] == 0)
 		return (0);
+	if (ft_strlen(str) == 1)
+		return (1);
 	i = 1;
 	nb_parts = 0;
 	while (str[i] != 0)
