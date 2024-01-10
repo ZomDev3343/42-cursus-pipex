@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:51:51 by truello           #+#    #+#             */
-/*   Updated: 2024/01/10 16:37:53 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/10 16:41:01 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	handle_command(t_cmds *cmd)
 	}
 }
 
-static void	handle_last(char *output_file, t_cmds *cmd)
+void	handle_last(char *output_file, t_cmds *cmd, int write_mode)
 {
 	int	file_fd;
 	int	fd[2];
@@ -75,7 +75,7 @@ static void	handle_last(char *output_file, t_cmds *cmd)
 	if (pid == 0)
 	{
 		unlink(output_file);
-		file_fd = open(output_file, O_CREAT | O_WRONLY, 0644);
+		file_fd = open(output_file, O_CREAT | write_mode, 0644);
 		if (file_fd == -1)
 			return (perror(""));
 		dup2(file_fd, STDOUT_FILENO);
@@ -103,7 +103,7 @@ void	pipex_bonus(char *input_file, char *output_file, t_cmds *cmds,
 		handle_command(cmds);
 		cmds = cmds->next;
 	}
-	handle_last(output_file, cmds);
+	handle_last(output_file, cmds, O_WRONLY);
 }
 
 int	main(int ac, char **av, char **env)

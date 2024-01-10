@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 15:02:15 by truello           #+#    #+#             */
-/*   Updated: 2024/01/10 16:37:10 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/10 16:42:08 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	add_line(char *line, char **file_content, char **tmp)
 	{
 		*tmp = ft_strnewjoin(*file_content, line);
 		free(*file_content);
-		*file_content = tmp;
+		*file_content = *tmp;
 	}
 }
 
@@ -37,7 +37,7 @@ static void	cut_limiter(char *line, char *limiter,
 	*tmp = ft_strnewjoin(*file_content, to_join);
 	free(*file_content);
 	free(to_join);
-	file_content = *tmp;
+	*file_content = *tmp;
 }
 
 static void	get_here_doc_data(char **file_content, char *limiter)
@@ -49,9 +49,9 @@ static void	get_here_doc_data(char **file_content, char *limiter)
 	while (line)
 	{
 		if (!ft_strnstr(line, limiter, ft_strlen(line)))
-			add_line(line, &file_content, &tmp);
+			add_line(line, file_content, &tmp);
 		else
-			cut_limiter(line, limiter, &file_content, &tmp);
+			cut_limiter(line, limiter, file_content, &tmp);
 		free(line);
 		line = get_next_line(0);
 	}
@@ -83,5 +83,5 @@ void	here_doc(char *limiter, char *output_file, t_cmds *cmds, int cmd_amt)
 		handle_command(cmds);
 		cmds = cmds->next;
 	}
-	handle_last_hd(output_file, cmds);
+	handle_last(output_file, cmds, O_APPEND);
 }
