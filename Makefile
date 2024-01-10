@@ -4,6 +4,8 @@ SRC=pipex.c \
 BONUS_SRC=pipex_bonus.c \
 	utils.c \
 	cmd_util.c \
+	here_doc.c \
+	here_doc_2.c \
 	utils_bonus.c
 OBJ=$(SRC:.c=.o)
 BONUS_OBJ=$(BONUS_SRC:.c=.o)
@@ -22,7 +24,7 @@ all:
 $(NAME): $(FT) $(OBJ)
 	cc $(FLAGS) $(FT) $(OBJ) -o $@
 
-bonus: $(FT) $(BONUS_OBJ)
+bonus: $(BONUS_OBJ) $(FT)
 	make -C libft
 	cc $(FLAGS) $(FT) $(BONUS_OBJ) -o $(BONUS)
 
@@ -36,4 +38,4 @@ fclean: clean
 
 re: clean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re pipex_bonus

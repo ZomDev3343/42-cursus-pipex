@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:13:22 by truello           #+#    #+#             */
-/*   Updated: 2023/12/19 15:40:49 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/09 15:22:18 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int ac, char **av, char **env)
 			else
 			{
 				unlink(av[4]);
-				fd = open(av[4], O_CREAT | O_APPEND | O_WRONLY, 0644);
+				fd = open(av[4], O_CREAT, 0644);
 				close(fd);
 			}
 		}
