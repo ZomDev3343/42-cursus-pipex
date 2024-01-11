@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:36:33 by truello           #+#    #+#             */
-/*   Updated: 2023/12/19 15:42:29 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/11 13:07:50 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	free_cmds(t_cmds *cmds)
 	if (cmds->cmd_args)
 		free_parts(cmds->cmd_args);
 	free(cmds);
+	cmds = NULL;
 }
 
 t_cmds	*newcmd(char *cmd_file, char **cmd_args)
@@ -80,10 +81,12 @@ int	get_commands(int ac, char **av, char *path, t_cmds **cmds)
 	i = 1;
 	while (++i < ac - 1)
 	{
+		ft_printf("nfwekggowhgw\n");
 		if (!av[i][0])
 			return (pbcmd(cmds, newcmd(ft_calloc(1, 1), NULL)), 1);
 		args = ft_split(av[i], ' ');
 		cmd_file = get_cmd_file(args[0], path);
+		ft_printf("CMD FILE : %s\n", cmd_file);
 		if (cmd_file == NULL)
 			return (free_cmds(*cmds), 0);
 		pbcmd(cmds, newcmd(cmd_file, args));

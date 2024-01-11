@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 12:36:40 by truello           #+#    #+#             */
-/*   Updated: 2024/01/10 12:39:37 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/11 10:50:59 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*ft_strncpy(char *to_copy, size_t n)
 	while (i < n && to_copy[i])
 	{
 		res[i] = to_copy[i];
+		i++;
 	}
 	return (res);
 }

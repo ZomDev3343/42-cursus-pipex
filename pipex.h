@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:16:25 by truello           #+#    #+#             */
-/*   Updated: 2024/01/10 16:40:07 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:52:07 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		get_cmds_amt(t_cmds *cmds);
 int		init_pipes_and_pids(int pipe_fd[2][2], int **pids, int amt);
 void	close_pipes(int pipe[2][2]);
 void	wait_all_pids(int *pids, int len);
-void	here_doc(char *limiter, char *output_file, t_cmds *cmds, int cmd_amt);
+void	here_doc(char *limiter, char *output_file, t_cmds **cmds, int cmd_amt);
 void	handle_command(t_cmds *cmd);
 void	handle_last(char *output_file, t_cmds *cmd, int write_mode);
 void	pipex_bonus(char *input_file, char *output_file,

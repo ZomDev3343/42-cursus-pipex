@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:51:51 by truello           #+#    #+#             */
-/*   Updated: 2024/01/10 16:41:01 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/11 14:55:24 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ void	handle_last(char *output_file, t_cmds *cmd, int write_mode)
 	pid = fork();
 	if (pid == 0)
 	{
-		unlink(output_file);
-		file_fd = open(output_file, O_CREAT | write_mode, 0644);
+		file_fd = open(output_file, O_CREAT | O_WRONLY | write_mode, 0644);
 		if (file_fd == -1)
 			return (perror(""));
 		dup2(file_fd, STDOUT_FILENO);
