@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:51:51 by truello           #+#    #+#             */
-/*   Updated: 2024/01/11 14:55:24 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/11 15:22:08 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	pipex_bonus(char *input_file, char *output_file, t_cmds *cmds,
 
 int	main(int ac, char **av, char **env)
 {
-	int		fd;
 	t_cmds	*cmds;
 
 	if (ac < 5)

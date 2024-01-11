@@ -6,7 +6,7 @@
 /*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 15:02:15 by truello           #+#    #+#             */
-/*   Updated: 2024/01/11 14:54:00 by truello          ###   ########.fr       */
+/*   Updated: 2024/01/11 15:24:01 by truello          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	cut_limiter(char *line, char *limiter,
 	char			*offset;
 	unsigned int	cropped_len;
 	char			*to_join;
-	int				i;
 
 	offset = ft_strnstr(line, limiter, ft_strlen(line));
+	cropped_len = offset - line;
 	to_join = ft_strncpy(line, cropped_len);
 	*tmp = ft_strnewjoin(*file_content, to_join);
 	free(*file_content);
