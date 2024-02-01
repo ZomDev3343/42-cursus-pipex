@@ -127,6 +127,7 @@ char	*get_next_line(int fd)
 	ssize_t				rs;
 	t_gnl_list			*new_elem;
 
+	new_elem = NULL;
 	if (fd == -1)
 		return (NULL);
 	if (line && flfd(&line, fd, 'x'))
@@ -143,8 +144,7 @@ char	*get_next_line(int fd)
 			break ;
 		rs = read(fd, readline, BUFFER_SIZE);
 	}
-	free(readline);
 	if (rs == -1 || !new_elem)
 		lst_clear_fd(&line, fd);
-	return (process_list(&line, fd));
+	return (free(readline), process_list(&line, fd));
 }

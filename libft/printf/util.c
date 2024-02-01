@@ -23,8 +23,6 @@ unsigned int	get_n_len_base(unsigned long n, unsigned int base)
 		return (0);
 	if (n == 0)
 		return (1);
-	if (n < 0)
-		nb *= -1;
 	while (nb > 0)
 	{
 		nb /= base;

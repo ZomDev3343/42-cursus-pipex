@@ -11,21 +11,21 @@ BONUS_OBJ=$(BONUS_SRC:.c=.o)
 BONUS=bonus
 NAME=pipex
 FT=libft/libft.a
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror -g
 
 all:
 	make -C libft
 	make $(NAME)
 
 %.o: %.c
-	cc $(FLAGS) -c $< -o $@
+	cc $(FLAGS) -g -c $< -o $@
 
 $(NAME): $(OBJ)
-	cc $(FLAGS) $(FT) $(OBJ) -o $@
+	cc $(FLAGS) $(OBJ) $(FT) -o $@
 
 $(BONUS): $(BONUS_OBJ)
 	make -C libft
-	cc $(FLAGS) $(FT) $(BONUS_OBJ) -o $(BONUS)
+	cc $(FLAGS) $(BONUS_OBJ) $(FT) -o $(BONUS)
 
 clean:
 	rm -rf *.o

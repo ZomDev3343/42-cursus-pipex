@@ -72,7 +72,7 @@ static void	write_here_doc(int fd[2], char *file_content)
 	idx = 0;
 	content_len = ft_strlen(file_content);
 	while (idx < content_len - 1)
-		idx += write(fd[1], file_content + idx, 1024);
+		idx += write(fd[1], file_content + idx, 1);
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 }
@@ -95,4 +95,5 @@ void	here_doc(char *limiter, char *output_file, t_cmds **cmds, int cmd_amt)
 		cmd = cmd->next;
 	}
 	handle_last(output_file, cmd, O_APPEND);
+	free(file_content);
 }

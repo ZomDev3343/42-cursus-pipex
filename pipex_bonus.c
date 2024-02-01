@@ -112,6 +112,6 @@ int	main(int ac, char **av, char **env)
 	if (ac < 5)
 		ft_printf("Usage : ./pipex input cmd1 ... cmdn output\n");
 	else
-		return (cmds = NULL, choose_pipex_mode(av, ac, env, &cmds));
+		return (cmds = NULL, choose_pipex_mode(av, ac, env, &cmds), free_cmds(cmds), 0);
 	return (0);
 }
