@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tohma <tohma@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:57:43 by truello           #+#    #+#             */
-/*   Updated: 2023/11/13 14:28:29 by truello          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:40:09 by tohma            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef unsigned char	t_bool;
 
 typedef struct s_format
 {
-	char		specifier;
+	int		specifier;
 }	t_format;
 
 int				ft_printf(const char *str, ...);

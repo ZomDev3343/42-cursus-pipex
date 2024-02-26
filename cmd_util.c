@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_util.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tohma <tohma@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:36:33 by truello           #+#    #+#             */
-/*   Updated: 2024/01/11 14:57:35 by truello          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:52:35 by tohma            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	get_commands(int ac, char **av, char *path, t_cmds **cmds)
 		args = ft_split(av[i], ' ');
 		cmd_file = get_cmd_file(args[0], path);
 		if (cmd_file == NULL)
-			return (free_cmds(*cmds), 0);
+			return (free_parts(args), free_cmds(*cmds), 0);
 		pbcmd(cmds, newcmd(cmd_file, args));
 	}
 	return (1);
