@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tohma <tohma@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:51:51 by truello           #+#    #+#             */
-/*   Updated: 2024/01/11 15:22:08 by truello          ###   ########.fr       */
+/*   Updated: 2024/02/26 17:02:52 by tohma            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	handle_first(char *input_file, t_cmds *cmd)
 		if (file_fd == -1)
 			return (perror(""));
 		dup2(file_fd, STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
+		if (cmd->next)
+			dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		if (execve(cmd->cmd_file, cmd->cmd_args, NULL) == -1)
 			perror("");
@@ -95,6 +96,9 @@ void	pipex_bonus(char *input_file, char *output_file, t_cmds *cmds,
 	int	cur_pid;
 
 	cur_pid = 0;
+	unlink(output_file);
+	if (cmd_amt == 1)
+		return (handle_only_command(input_file, output_file, cmds));
 	handle_first(input_file, cmds);
 	cmds = cmds->next;
 	while (++cur_pid < cmd_amt - 1)
@@ -109,9 +113,10 @@ int	main(int ac, char **av, char **env)
 {
 	t_cmds	*cmds;
 
-	if (ac < 5)
+	if (ac < 4)
 		ft_printf("Usage : ./pipex input cmd1 ... cmdn output\n");
 	else
-		return (cmds = NULL, choose_pipex_mode(av, ac, env, &cmds), free_cmds(cmds), 0);
+		return (cmds = NULL,
+			choose_pipex_mode(av, ac, env, &cmds), free_cmds(cmds), 0);
 	return (0);
 }

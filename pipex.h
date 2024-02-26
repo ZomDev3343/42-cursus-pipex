@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tohma <tohma@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:16:25 by truello           #+#    #+#             */
-/*   Updated: 2024/01/11 12:52:07 by truello          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:43:34 by tohma            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void	handle_command(t_cmds *cmd);
 void	handle_last(char *output_file, t_cmds *cmd, int write_mode);
 void	pipex_bonus(char *input_file, char *output_file,
 			t_cmds *cmds, int cmd_amt);
+void	handle_only_command(char *input_file, char *output_file, t_cmds *cmd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: truello <truello@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tohma <tohma@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:36:56 by truello           #+#    #+#             */
-/*   Updated: 2024/01/11 13:03:27 by truello          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:54:39 by tohma            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	choose_pipex_mode(char **av, int ac, char **env, t_cmds **cmds)
 	int	here_doc_mode;
 
 	here_doc_mode = ft_strcmp(av[1], "here_doc");
-	if (here_doc_mode)
+	if (here_doc_mode && ac > 4)
 	{
 		if (get_commands(ac - 1, av + 1, get_path(env), cmds))
 			return (here_doc(av[2], av[ac - 1], cmds, get_cmds_amt(*cmds)), 0);
