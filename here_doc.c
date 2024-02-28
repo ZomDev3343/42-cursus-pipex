@@ -6,7 +6,7 @@
 /*   By: tohma <tohma@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 15:02:15 by truello           #+#    #+#             */
-/*   Updated: 2024/02/26 16:26:59 by tohma            ###   ########.fr       */
+/*   Updated: 2024/02/28 15:54:05 by tohma            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ static void	cut_limiter(char *line, char *limiter,
 	offset = ft_strnstr(line, limiter, ft_strlen(line));
 	cropped_len = offset - line;
 	to_join = ft_strncpy(line, cropped_len);
-	*tmp = ft_strnewjoin(*file_content, to_join);
+	if (*file_content)
+		*tmp = ft_strnewjoin(*file_content, to_join);
+	else
+		*tmp = ft_strnewjoin(to_join, "");
 	free(*file_content);
 	free(line);
 	free(to_join);
